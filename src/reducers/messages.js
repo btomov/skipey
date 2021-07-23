@@ -20,8 +20,21 @@ export default function messages(state = getMessages(10), action) {
         }
       };
     case SEND_EDIT_MESSAGE:
-      
-      break;
+      const {messageId, text, userId: user} = action.payload;
+      const allUserMessages = state[user];
+      return{
+        ...state,
+        [user]: {
+          ...allUserMessages,
+          [messageId]:{
+            messageId,
+            text,
+            is_user_msg: true,
+            number: messageId,
+          }
+        }
+
+      }
     default:
       return state;
   }

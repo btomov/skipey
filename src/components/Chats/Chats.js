@@ -5,13 +5,11 @@ import store from "../../store";
 
 const Chat = ({ message,number }) => {
   const { text, is_user_msg } = message;
+
   const startEditing = (e) =>{
-    store.dispatch(startEditMessage(e.target.dataset.number, text))
-    console.log(e.target.dataset.number, ' number');
-    console.log(text, ' text');
-    // console.log('clicked1');
-    // console.log(e.target);
-    //Send out edit action
+    if(e.target.classList.contains('is-user-msg')){
+      store.dispatch(startEditMessage(e.target.dataset.number, text))
+    }
 }
 
   return (

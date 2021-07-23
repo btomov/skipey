@@ -10,7 +10,7 @@ const ChatWindow = ({ activeUserId }) => {
   const state = store.getState();
   const activeUser = state.contacts[activeUserId];
   const activeMsgs = state.messages[activeUserId];
-  const { typing } = state;
+  const { typing, editing } = state.typing;
   return (
     <div className="ChatWindow">
       <Header user={activeUser} />

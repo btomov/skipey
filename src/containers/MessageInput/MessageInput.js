@@ -1,18 +1,18 @@
 import React from "react";
 import store from "../../store";
-import { setTypingValue, sendMessage } from "../../actions";
+import { setTypingValue, sendMessage,sendEditMessage } from "../../actions";
 import "./MessageInput.css";
 
 const MessageInput = ({ value }) => {
     const state = store.getState();  
-    let {isEditing}  = state;
     const handleSubmit = e => {
         e.preventDefault();
-        const { typing, activeUserId } = state;
-        if(!isEditing){
+        const {typing, editing} = state.typing;
+        const { activeUserId } = state;
+        if(!editing){
           store.dispatch(sendMessage(typing, activeUserId));
         }else{
-          //store.dispatch(sendEditMessage(number, newText));
+          store.dispatch(sendEditMessage(editing, typing, activeUserId));
         }
       };
     

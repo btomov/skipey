@@ -1,19 +1,42 @@
-import React, { Component } from "react";
+import React, { Component, useRef } from "react";
 import "./Chats.css";
-import { startEditMessage } from "../../actions";
+import { startEditMessage,deleteMessage } from "../../actions";
 import store from "../../store";
+import { BsTrash } from "react-icons/bs";
+import { BiPencil } from "react-icons/bi";
 
-const Chat = ({ message,number }) => {
+const Chat = ({ message,number, activeUserId }) => {
   const { text, is_user_msg } = message;
 
+  const chatUtilsRef = useRef();
+
   const startEditing = (e) =>{
+    store.dispatch(startEditMessage(e.target.closest('.is-user-msg').dataset.number, text))
+  }
+  const deleteMsg = (e) =>{
+    store.dispatch(deleteMessage(e.target.closest('.is-user-msg').dataset.number, activeUserId))
+  }
+
+  const showUtils = (e) =>{
     if(e.target.classList.contains('is-user-msg')){
-      store.dispatch(startEditMessage(e.target.dataset.number, text))
+      const divElement = chatUtilsRef.current;
+      divElement.style.display='inline-block'
     }
-}
+  }
+  const hideUtils = (e) =>{
+    if(e.target.classList.contains('is-user-msg')){
+      const divElement = chatUtilsRef.current;
+      divElement.style.display='none'
+    }
+  }
 
   return (
-    <span onClick={startEditing} data-number={number} className={`Chat ${is_user_msg ? "is-user-msg" : ""}`}>{text}</span>
+    <span onMouseEnter={showUtils} onMouseLeave={hideUtils} data-number={number} className={`Chat ${is_user_msg ? "is-user-msg" : ""}`}>
+      <div ref={chatUtilsRef} className="chat-utils">
+        <BsTrash onClick={deleteMsg} />
+        <BiPencil onClick={startEditing} />
+      </div>
+    {text}</span>
   );
 };
 
@@ -38,7 +61,7 @@ class Chats extends Component {
     return (
       <div className="Chats" ref={this.chatsRef}>
         {this.props.messages.map(message => (
-          <Chat message={message} number={message.number} key={message.number}/>
+          <Chat message={message} number={message.number} activeUserId={this.props.activeUserId} key={message.number}/>
         ))}
       </div>
     );

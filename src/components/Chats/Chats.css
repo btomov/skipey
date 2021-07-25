@@ -24,7 +24,11 @@
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
   }
-  
+
+  .chat-utils{
+    display:none;
+  }
+
   @media (min-width: 576px) {
     .Chat {
       max-width: 60%;
